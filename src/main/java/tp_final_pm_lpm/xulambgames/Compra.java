@@ -1,6 +1,8 @@
 package tp_final_pm_lpm.xulambgames;
 
-public class Compra {
+import java.io.Serializable;
+
+public class Compra implements Serializable {
     private String jogosVendidos;
     private String dataDeVenda;
     private Cliente cliente;
