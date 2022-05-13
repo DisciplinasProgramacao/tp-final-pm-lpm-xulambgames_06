@@ -18,6 +18,10 @@ public class Compra implements Serializable {
         this.dataDaCompra = new Date();
     }
 
+    public Cliente getCliente() {
+        return this.cliente;
+    }
+
     public double precoVenda() {
         return 0;
     }
@@ -27,7 +31,24 @@ public class Compra implements Serializable {
     }
 
     public String relatorioCompletoDeVenda() {
-        return "";
+        var stringBuilder = new StringBuilder();
+
+        stringBuilder.append("Cliente: ");
+        stringBuilder.append(this.cliente.getNome());
+        stringBuilder.append("\n");
+
+        stringBuilder.append("Data da compra: ");
+        stringBuilder.append(this.dataDaCompra);
+        stringBuilder.append("\n");
+
+        stringBuilder.append("Jogos:\n");
+        for(var jogo : this.jogos) {
+            stringBuilder.append("\t");
+            stringBuilder.append(jogo.getNome());
+            stringBuilder.append("\n");
+        }
+
+        return stringBuilder.toString();
     }
 
     public void clienteDaVenda(Cliente cliente) {

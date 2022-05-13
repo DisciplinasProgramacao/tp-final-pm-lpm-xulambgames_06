@@ -94,9 +94,7 @@ public class XulambGames {
         System.out.println("Jogo cadastrado com sucesso");
     }
 
-    private void cadastrarCompra() {
-        System.out.println("Cadastrar nova compra");
-
+    private Cliente procurarCliente() {
         Cliente cliente = null;
         while(cliente == null) {
             System.out.print("Nome do cliente: ");
@@ -107,7 +105,13 @@ public class XulambGames {
                 System.out.println("Cliente não encontrado!");
             }
         }
+        return cliente;
+    }
 
+    private void cadastrarCompra() {
+        System.out.println("Cadastrar nova compra");
+
+        var cliente = procurarCliente();
         var jogos = new ArrayList<Jogo>();
         var menuString = """
                 0 - Sair
@@ -146,7 +150,17 @@ public class XulambGames {
         System.out.println("Compra cadastrada com sucesso");
     }
 
-    public void salvar() {
+    private void historicoCliente() {
+        System.out.println("Historico de compras");
+
+        Cliente cliente = procurarCliente();
+        var compras = this.vendas.stream().filter(x -> x.getCliente().equals(cliente)).toList();
+        for(var compra : compras) {
+            System.out.println(compra.relatorioCompletoDeVenda());
+        }
+    }
+
+    private void salvar() {
         try {
             var fileOutputStream = new FileOutputStream("data.bin");
             var objectOutputStream = new ObjectOutputStream(fileOutputStream);
@@ -168,9 +182,11 @@ public class XulambGames {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        System.out.println("Todos os dados do sistema foram salvos!");
     }
 
-    public void ler() {
+    private void ler() {
         try {
             var fileInputStream = new FileInputStream("data.bin");
             var objectInputStream = new ObjectInputStream(fileInputStream);
@@ -188,6 +204,8 @@ public class XulambGames {
 
             objectInputStream.close();
             fileInputStream.close();
+        } catch (EOFException e) {
+            System.out.println("Todos os dados do sistema foram carregados!");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -213,7 +231,7 @@ public class XulambGames {
             switch (option) {
                 case 0 -> salvar();
                 case 1 -> cadastrarCliente();
-                case 2 -> System.out.println("Historico cliente");
+                case 2 -> historicoCliente();
                 case 3 -> cadastrarJogo();
                 case 4 -> cadastrarCompra();
             }
