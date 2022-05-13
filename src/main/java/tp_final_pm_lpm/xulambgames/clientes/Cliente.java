@@ -1,4 +1,4 @@
-package tp_final_pm_lpm.xulambgames;
+package tp_final_pm_lpm.xulambgames.clientes;
 
 import java.io.Serializable;
 

@@ -1,19 +1,21 @@
 package tp_final_pm_lpm.xulambgames;
 
+import tp_final_pm_lpm.xulambgames.clientes.Cliente;
+import tp_final_pm_lpm.xulambgames.jogos.*;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class XulambGames {
-    private final List<Jogo> jogosVendidosTotal;
+    private final List<Jogo> jogos;
     private final List<Compra> vendas;
     private final List<Cliente> clientes;
     private final Scanner scanner;
 
-
     public XulambGames() {
-        this.jogosVendidosTotal = new ArrayList<>();
+        this.jogos = new ArrayList<>();
         this.vendas = new ArrayList<>();
         this.clientes = new ArrayList<>();
         this.scanner = new Scanner(System.in);
@@ -57,12 +59,42 @@ public class XulambGames {
         System.out.println("Cadastro concluido com sucesso");
     }
 
+    public void cadastrarJogo() {
+        System.out.println("Cadastrar novo jogo");
+
+        var menuString = """
+                0 - Lançamento
+                1 - Premium
+                2 - Regular
+                3 - Promoção
+                """;
+
+        Jogo jogo = null;
+        while(jogo == null) {
+            System.out.println("Categorias: ");
+            System.out.println(menuString);
+            System.out.print("Categoria: ");
+            int option = this.scanner.nextInt();
+
+            switch (option) {
+                case 0 -> jogo = new Lancamento();
+                case 1 -> jogo = new Premium();
+                case 2 -> jogo = new Regular();
+                case 3 -> jogo = new Promocao();
+            }
+        }
+
+        this.jogos.add(jogo);
+
+        System.out.println("Cadastro concluido com sucesso");
+    }
+
     public void salvar() {
         try {
             var fileOutputStream = new FileOutputStream("data.bin");
             var objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-            for(var jogo : this.jogosVendidosTotal) {
+            for(var jogo : this.jogos) {
                 objectOutputStream.writeObject(jogo);
             }
 
@@ -88,7 +120,7 @@ public class XulambGames {
                 if (object instanceof Cliente cliente) {
                     this.clientes.add(cliente);
                 } else if (object instanceof Jogo jogo) {
-                    this.jogosVendidosTotal.add(jogo);
+                    this.jogos.add(jogo);
                 } else if (object instanceof Compra venda) {
                     this.vendas.add(venda);
                 }
@@ -118,7 +150,7 @@ public class XulambGames {
                 case 0 -> salvar();
                 case 1 -> cadastrarCliente();
                 case 2 -> System.out.println("Historico cliente");
-                case 3 -> System.out.println("Cadastrar jogo");
+                case 3 -> cadastrarJogo();
                 case 4 -> System.out.println("Cadastrar compra");
             }
         }
