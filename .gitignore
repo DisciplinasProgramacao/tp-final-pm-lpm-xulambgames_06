@@ -3,3 +3,6 @@
 
 # Build
 /target
+
+# Generated
+/data.bin
