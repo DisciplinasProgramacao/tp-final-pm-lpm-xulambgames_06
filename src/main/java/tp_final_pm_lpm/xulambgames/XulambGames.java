@@ -41,17 +41,17 @@ public class XulambGames {
 
     }
 
-    public void cadastrarCliente() {
+    private void cadastrarCliente() {
         System.out.println("Cadastrar novo cliente");
 
         System.out.print("Nome: ");
-        var nome = this.scanner.next();
+        var nome = this.scanner.nextLine();
 
         System.out.print("Nome de usuario: ");
-        var usuario = this.scanner.next();
+        var usuario = this.scanner.nextLine();
 
         System.out.print("Senha: ");
-        var senha = this.scanner.next();
+        var senha = this.scanner.nextLine();
 
         var cliente = new Cliente(nome, usuario, senha);
         this.clientes.add(cliente);
@@ -59,7 +59,7 @@ public class XulambGames {
         System.out.println("Cadastro concluido com sucesso");
     }
 
-    public void cadastrarJogo() {
+    private void cadastrarJogo() {
         System.out.println("Cadastrar novo jogo");
 
         var menuString = """
@@ -88,7 +88,6 @@ public class XulambGames {
 
         System.out.println("Cadastro concluido com sucesso");
     }
-
     public void salvar() {
         try {
             var fileOutputStream = new FileOutputStream("data.bin");
@@ -105,6 +104,9 @@ public class XulambGames {
             for(var cliente : this.clientes) {
                 objectOutputStream.writeObject(cliente);
             }
+
+            objectOutputStream.close();
+            fileOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -125,6 +127,9 @@ public class XulambGames {
                     this.vendas.add(venda);
                 }
             }
+
+            objectInputStream.close();
+            fileInputStream.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -146,6 +151,7 @@ public class XulambGames {
             System.out.print("Opção: ");
             option = scanner.nextInt();
 
+            this.scanner.nextLine();
             switch (option) {
                 case 0 -> salvar();
                 case 1 -> cadastrarCliente();
