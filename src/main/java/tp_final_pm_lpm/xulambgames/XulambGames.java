@@ -56,7 +56,7 @@ public class XulambGames {
         var cliente = new Cliente(nome, usuario, senha);
         this.clientes.add(cliente);
 
-        System.out.println("Cadastro concluido com sucesso");
+        System.out.println("Cliente cadastrado com sucesso");
     }
 
     private void cadastrarJogo() {
@@ -84,10 +84,68 @@ public class XulambGames {
             }
         }
 
+        this.scanner.nextLine();
+        System.out.print("Nome: ");
+        var nome = this.scanner.nextLine();
+        jogo.setNome(nome);
+
         this.jogos.add(jogo);
 
-        System.out.println("Cadastro concluido com sucesso");
+        System.out.println("Jogo cadastrado com sucesso");
     }
+
+    private void cadastrarCompra() {
+        System.out.println("Cadastrar nova compra");
+
+        Cliente cliente = null;
+        while(cliente == null) {
+            System.out.print("Nome do cliente: ");
+            var nome = this.scanner.nextLine();
+
+            cliente = this.clientes.stream().filter(x -> x.getNome().equals(nome)).findAny().orElse(null);
+            if(cliente == null) {
+                System.out.println("Cliente não encontrado!");
+            }
+        }
+
+        var jogos = new ArrayList<Jogo>();
+        var menuString = """
+                0 - Sair
+                1 - Adicionar jogo
+                """;
+        int option = -1;
+        while(option != 0) {
+            System.out.print(menuString);
+            System.out.print("Opção: ");
+            option = this.scanner.nextInt();
+            this.scanner.nextLine();
+
+            if(option == 1) {
+                Jogo jogo = null;
+                while(jogo == null) {
+                    System.out.print("Nome do jogo: ");
+                    var nome = this.scanner.nextLine();
+
+                    jogo = this.jogos.stream().filter(x -> x.getNome().equals(nome)).findAny().orElse(null);
+                    if(jogo == null) {
+                        System.out.println("Jogo não encontrado!");
+                    }
+                }
+
+                if(!jogos.contains(jogo)) {
+                    jogos.add(jogo);
+                } else {
+                    System.out.println("Jogo ja adicionado");
+                }
+            }
+        }
+
+        var compra = new Compra(cliente, jogos);
+        this.vendas.add(compra);
+
+        System.out.println("Compra cadastrada com sucesso");
+    }
+
     public void salvar() {
         try {
             var fileOutputStream = new FileOutputStream("data.bin");
@@ -157,7 +215,7 @@ public class XulambGames {
                 case 1 -> cadastrarCliente();
                 case 2 -> System.out.println("Historico cliente");
                 case 3 -> cadastrarJogo();
-                case 4 -> System.out.println("Cadastrar compra");
+                case 4 -> cadastrarCompra();
             }
         }
     }

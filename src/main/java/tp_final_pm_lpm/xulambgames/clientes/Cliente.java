@@ -19,6 +19,10 @@ public class Cliente implements Serializable {
         this.senha = senha;
     }
 
+    public String getNome() {
+        return this.nome;
+    }
+
     public double precoMensalidade() {
         return 0;
     }
