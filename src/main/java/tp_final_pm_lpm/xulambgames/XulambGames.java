@@ -3,16 +3,20 @@ package tp_final_pm_lpm.xulambgames;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class XulambGames {
     private final List<Jogo> jogosVendidosTotal;
     private final List<Compra> vendas;
     private final List<Cliente> clientes;
+    private final Scanner scanner;
+
 
     public XulambGames() {
         this.jogosVendidosTotal = new ArrayList<>();
         this.vendas = new ArrayList<>();
         this.clientes = new ArrayList<>();
+        this.scanner = new Scanner(System.in);
     }
 
     public double valorMensalVendido(int mes, int ano) {
@@ -33,6 +37,24 @@ public class XulambGames {
 
     public void cadastrarVenda(Compra compra) {
 
+    }
+
+    public void cadastrarCliente() {
+        System.out.println("Cadastrar novo cliente");
+
+        System.out.print("Nome: ");
+        var nome = this.scanner.next();
+
+        System.out.print("Nome de usuario: ");
+        var usuario = this.scanner.next();
+
+        System.out.print("Senha: ");
+        var senha = this.scanner.next();
+
+        var cliente = new Cliente(nome, usuario, senha);
+        this.clientes.add(cliente);
+
+        System.out.println("Cadastro concluido com sucesso");
     }
 
     public void salvar() {
@@ -73,6 +95,32 @@ public class XulambGames {
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void inicializar() {
+        ler();
+
+        var menuString = """
+                0 - Sair
+                1 - Cadastrar cliente
+                2 - Historico cliente
+                3 - Cadastrar jogo
+                4 - Cadastrar compra
+                """;
+        int option = -1;
+        while(option != 0) {
+            System.out.println(menuString);
+            System.out.print("Opção: ");
+            option = scanner.nextInt();
+
+            switch (option) {
+                case 0 -> salvar();
+                case 1 -> cadastrarCliente();
+                case 2 -> System.out.println("Historico cliente");
+                case 3 -> System.out.println("Cadastrar jogo");
+                case 4 -> System.out.println("Cadastrar compra");
+            }
         }
     }
 }
