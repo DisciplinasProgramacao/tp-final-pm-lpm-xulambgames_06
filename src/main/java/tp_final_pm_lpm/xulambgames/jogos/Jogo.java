@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Jogo implements Serializable {
     private String nome;
 
+
     public String getNome() {
         return this.nome;
     }
@@ -16,4 +17,5 @@ public class Jogo implements Serializable {
     public double calcularPrecoVenda() {
         return 0;
     }
+
 }
